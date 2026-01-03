@@ -1,8 +1,9 @@
 # Model Configuration
 model:
-  # Model types to use in ensemble: lstm, gru, random_forest, xgboost, lightgbm
+  # Model types to use in ensemble: random_forest, xgboost, lightgbm
+  # Note: lstm and gru require TensorFlow and are not included in ensemble by default
+  # due to sequence handling requirements. They can be trained separately.
   ensemble_models:
-    - lstm
     - random_forest
     - xgboost
   

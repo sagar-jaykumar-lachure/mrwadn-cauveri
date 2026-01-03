@@ -76,14 +76,14 @@ class FloodDataProcessor:
         logger.info(f"Handling missing values using method: {method}")
         
         if method == 'forward_fill':
-            df = df.fillna(method='ffill')
+            df = df.ffill()
         elif method == 'interpolate':
             df = df.interpolate(method='linear')
         elif method == 'drop':
             df = df.dropna()
         
         # Fill any remaining NaN values with forward fill
-        df = df.fillna(method='ffill').fillna(method='bfill')
+        df = df.ffill().bfill()
         
         return df
     

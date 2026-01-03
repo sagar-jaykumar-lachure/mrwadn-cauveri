@@ -193,7 +193,7 @@ class FloodFeatureEngineer:
         df = self.create_rate_of_change_features(df, base_columns)
         
         # Fill NaN values created by feature engineering
-        df = df.fillna(method='bfill').fillna(0)
+        df = df.bfill().fillna(0)
         
         logger.info(f"Feature engineering complete. Total features: {len(df.columns)}")
         
