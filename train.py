@@ -144,7 +144,7 @@ def train_models(config_path: str = "config.yaml", data_path: str = None):
             logger.info("LSTM model trained but not added to ensemble (requires sequence handling)")
         
         elif model_type == 'gru':
-            # Prepare sequences for GRU
+            # Prepare sequences for GRU (uses same config as LSTM for sequence_length)
             sequence_length = config.get('model', {}).get('lstm', {}).get('sequence_length', 30)
             input_shape = (sequence_length, X_train.shape[1])
             
