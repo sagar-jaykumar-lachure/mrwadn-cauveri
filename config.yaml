@@ -1,0 +1,109 @@
+# Model Configuration
+model:
+  # Model types to use in ensemble: lstm, gru, random_forest, xgboost, lightgbm
+  ensemble_models:
+    - lstm
+    - random_forest
+    - xgboost
+  
+  # LSTM/GRU Configuration
+  lstm:
+    units: [128, 64, 32]
+    dropout: 0.3
+    sequence_length: 30
+    batch_size: 32
+    epochs: 100
+    learning_rate: 0.001
+  
+  # Random Forest Configuration
+  random_forest:
+    n_estimators: 200
+    max_depth: 20
+    min_samples_split: 5
+    min_samples_leaf: 2
+  
+  # XGBoost Configuration
+  xgboost:
+    n_estimators: 200
+    max_depth: 10
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+  
+  # LightGBM Configuration
+  lightgbm:
+    n_estimators: 200
+    max_depth: 10
+    learning_rate: 0.05
+    num_leaves: 31
+
+# Feature Engineering
+features:
+  # Weather features
+  weather:
+    - rainfall
+    - temperature
+    - humidity
+    - wind_speed
+    - pressure
+  
+  # River features
+  river:
+    - water_level
+    - flow_rate
+    - upstream_level
+  
+  # Temporal features (auto-generated)
+  temporal:
+    - hour
+    - day_of_week
+    - month
+    - season
+  
+  # Lag features (auto-generated)
+  lag_periods: [1, 2, 3, 6, 12, 24]
+  
+  # Rolling statistics (auto-generated)
+  rolling_windows: [3, 6, 12, 24]
+
+# Data Processing
+data:
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  
+  # Normalization method: minmax, standard, robust
+  normalization: minmax
+  
+  # Handle missing values: forward_fill, interpolate, drop
+  missing_values: interpolate
+
+# Training
+training:
+  cross_validation: 5
+  early_stopping_patience: 15
+  save_best_only: true
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - auc_roc
+
+# Prediction
+prediction:
+  # Threshold for flood classification (0-1)
+  flood_threshold: 0.5
+  
+  # Confidence threshold for high-confidence predictions
+  confidence_threshold: 0.8
+  
+  # Ensemble strategy: voting, weighted_average, stacking
+  ensemble_strategy: weighted_average
+
+# Paths
+paths:
+  data_dir: data
+  model_dir: models
+  log_dir: logs
+  checkpoint_dir: checkpoints
