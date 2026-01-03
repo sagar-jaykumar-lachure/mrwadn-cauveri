@@ -62,6 +62,9 @@ def train_models(config_path: str = "config.yaml", data_path: str = None):
     logger.info(f"Loading data from {data_path}")
     df = data_processor.load_data(data_path)
     
+    # Handle missing values
+    df = data_processor.handle_missing_values(df)
+    
     # Feature engineering
     df = feature_engineer.engineer_features(df)
     
@@ -69,15 +72,16 @@ def train_models(config_path: str = "config.yaml", data_path: str = None):
     feature_cols = feature_engineer.get_feature_names(df)
     logger.info(f"Total features: {len(feature_cols)}")
     
-    # Process data
-    processed_data = data_processor.process_data(data_path, feature_cols)
+    # Split data
+    train_df, val_df, test_df = data_processor.split_data(df, 'flood_event')
     
-    X_train = processed_data['X_train']
-    X_val = processed_data['X_val']
-    X_test = processed_data['X_test']
-    y_train = processed_data['y_train']
-    y_val = processed_data['y_val']
-    y_test = processed_data['y_test']
+    # Normalize features
+    X_train, X_val, X_test = data_processor.normalize_features(train_df, val_df, test_df, feature_cols)
+    
+    # Get targets
+    y_train = train_df['flood_event'].values
+    y_val = val_df['flood_event'].values
+    y_test = test_df['flood_event'].values
     
     # Get ensemble model types from config
     ensemble_models = config.get('model', {}).get('ensemble_models', ['random_forest', 'xgboost'])
